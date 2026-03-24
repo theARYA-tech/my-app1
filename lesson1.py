@@ -1,0 +1,7 @@
+name=input("what is your name?")
+age=input("what is your age")
+country=input("what country are you from")
+print("hello " +name)
+print("you are " +age)
+print("you are from" +country)
+print("welcome to programming")
