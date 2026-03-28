@@ -77,7 +77,11 @@ def send_otp(email, otp):
     def send():
         with app.app_context():
             try:
-                print("📧 Sending OTP to:", email)
+                # SHOW OTP IN TERMINAL / RENDER LOGS
+                print("=" * 50)
+                print(f"📧 Sending OTP to: {email}")
+                print(f"🔑 OTP CODE: {otp}")
+                print("=" * 50)
 
                 msg = Message(
                     "Your Verification Code",
@@ -87,13 +91,13 @@ def send_otp(email, otp):
                 msg.body = f"Your verification code is: {otp}"
 
                 mail.send(msg)
-                print("✅ EMAIL SENT")
+
+                print("✅ EMAIL SENT SUCCESSFULLY")
 
             except Exception as e:
                 print("❌ EMAIL ERROR:", e)
 
     threading.Thread(target=send, daemon=True).start()
-
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
