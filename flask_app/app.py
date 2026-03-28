@@ -74,30 +74,25 @@ create_tables()
 # HELPERS
 # ======================
 def send_otp(email, otp):
-    def send():
-        with app.app_context():
-            try:
-                # SHOW OTP IN TERMINAL / RENDER LOGS
-                print("=" * 50)
-                print(f"📧 Sending OTP to: {email}")
-                print(f"🔑 OTP CODE: {otp}")
-                print("=" * 50)
+    try:
+        print("=" * 50, flush=True)
+        print(f"📧 Sending OTP to: {email}", flush=True)
+        print(f"🔑 OTP CODE: {otp}", flush=True)
+        print("=" * 50, flush=True)
 
-                msg = Message(
-                    "Your Verification Code",
-                    sender=app.config['MAIL_USERNAME'],
-                    recipients=[email]
-                )
-                msg.body = f"Your verification code is: {otp}"
+        msg = Message(
+            "Your Verification Code",
+            sender=app.config['MAIL_USERNAME'],
+            recipients=[email]
+        )
+        msg.body = f"Your verification code is: {otp}"
 
-                mail.send(msg)
+        mail.send(msg)
 
-                print("✅ EMAIL SENT SUCCESSFULLY")
+        print("✅ EMAIL SENT SUCCESSFULLY", flush=True)
 
-            except Exception as e:
-                print("❌ EMAIL ERROR:", e)
-
-    threading.Thread(target=send, daemon=True).start()
+    except Exception as e:
+        print("❌ EMAIL ERROR:", e, flush=True)
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
