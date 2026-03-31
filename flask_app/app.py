@@ -8,7 +8,7 @@ import threading
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
-app.secret_key = "secretkey"
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 app.permanent_session_lifetime = timedelta(days=30)
 
 # ======================
@@ -17,8 +17,8 @@ app.permanent_session_lifetime = timedelta(days=30)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'your_email@gmail.com'
-app.config['MAIL_PASSWORD'] = 'your_16_digit_app_password'
+app.config['MAIL_USERNAME'] = os.environ.get("MAIL_USERNAME")
+app.config['MAIL_PASSWORD'] = os.environ.get("MAIL_PASSWORD")
 app.config['MAIL_TIMEOUT'] = 10
 
 mail = Mail(app)
@@ -196,7 +196,7 @@ def signup():
             "expires": (datetime.now() + timedelta(minutes=5)).isoformat()
         }
 
-        print("🔑 OTP GENERATED:", otp)  # ✅ DEBUG (IMPORTANT)
+        print("🔑 OTP GENERATED:", otp, flush=True)  # ✅ DEBUG (IMPORTANT)
 
         send_otp(email, otp)
 

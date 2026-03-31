@@ -388,7 +388,10 @@ function hideError(el) {
 function openOTP() {
     hideError(otpError);
 
+// ONLY clear if fresh request
+if (!localStorage.getItem("otp_requested")) {
     inputs.forEach(input => input.value = "");
+}
     otpOverlay.classList.add("show");
 
     setTimeout(() => {
@@ -448,11 +451,13 @@ inputs.forEach((input, i) => {
 
         hideError(otpError);
 
+        // ✅ SAVE OTP AS USER TYPES
+        localStorage.setItem("otp_values", getOTP());
+
         if (input.value && i < inputs.length - 1) {
             inputs[i + 1].focus();
         }
     });
-
     input.addEventListener("keydown", (e) => {
         if (e.key === "Backspace" && !input.value && i > 0) {
             inputs[i - 1].focus();
@@ -481,6 +486,12 @@ inputs.forEach((input, i) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    const savedOTP = localStorage.getItem("otp_values");
+if (savedOTP) {
+    [...savedOTP].forEach((char, idx) => {
+        if (inputs[idx]) inputs[idx].value = char;
+    });
+}
     const savedEmail = localStorage.getItem("signup_email");
     const savedUsername = localStorage.getItem("signup_username");
 
